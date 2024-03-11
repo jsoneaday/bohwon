@@ -11,9 +11,11 @@ path = "src/main.rs"
 name = "bohwon-web"
 
 [dependencies]
+bignumber = "0.1.1"
 chrono = { version = "0.4.35", features = ["serde"] }
 console_error_panic_hook = "0.1.7"
 derive_more = "0.99.17"
+gloo-utils = { version = "0.2.0", features = ["serde"] }
 js-sys = "0.3.69"
 leptos = { version = "0.6.9", features = ["csr", "nightly"] }
 leptos-use = "0.10.4"
