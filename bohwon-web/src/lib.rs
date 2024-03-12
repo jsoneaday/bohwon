@@ -1,6 +1,9 @@
 mod app;
 mod common {
     pub mod irys;
+    pub mod api {
+        pub mod liteseed;
+    }
 }
 
 use leptos::*;
