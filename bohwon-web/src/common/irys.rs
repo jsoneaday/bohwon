@@ -1,4 +1,3 @@
-use gloo_utils::format::JsValueSerdeExt;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use serde::{Deserialize, Serialize};
@@ -17,19 +16,76 @@ extern "C" {
     #[wasm_bindgen(method, js_name = getPrice)]
     pub async fn get_price(this: &WebIrys, bytes: u64) -> JsValue;
 
+    #[wasm_bindgen(method, js_name = fund)]
+    pub async fn fund(this: &WebIrys, atomicValue: JsValue) -> JsValue;
+
     #[wasm_bindgen(method, js_name = uploadFile)]
-    pub async fn upload_file(this: &WebIrys, file: JsValue, tags: JsValue) -> JsValue;
+    pub async fn upload_file(this: &WebIrys, file: JsValue, configs: JsValue) -> JsValue;
+
+    #[wasm_bindgen(js_name = toAtomic)]
+    pub fn to_atomic(irys: &WebIrys, value: JsValue) -> JsValue;
+
+    #[wasm_bindgen(js_name = fromAtomic)]
+    pub fn from_atomic(irys: &WebIrys, value: JsValue) -> JsValue;
+
+    #[wasm_bindgen(js_name = token)]
+    pub fn token(irys: &WebIrys) -> JsValue;
 
     #[wasm_bindgen(js_name = getIrysInstance)]
-    pub async fn get_irys_instance(url: String, token: String, wallet: JsValue) -> JsValue;
+    pub fn get_irys_instance(url: String, token: String, wallet: JsValue) -> JsValue;
 
     pub type Solflare;
 
     #[wasm_bindgen(js_name = getSolflareInstance)]
-    pub async fn get_solflare_instance(immediate_connect: bool) -> JsValue;
+    pub fn get_solflare_instance(immediate_connect: bool) -> JsValue;
 
 }
 
+
+#[allow(unused)]
+#[wasm_bindgen]
+#[derive(Deserialize)]
+pub struct FundTx {
+    pub quantity: f64
+}
+
+impl FundTx {
+    pub fn new(quantity: f64) -> Self {
+        FundTx { quantity }
+    }
+}
+
+#[allow(unused)]
+#[wasm_bindgen]
+pub struct UploadConfigs {
+    tags: Vec<Tag>
+}
+
+impl UploadConfigs {
+    pub fn new(tags: Vec<Tag>) -> Self {
+        UploadConfigs {
+            tags
+        }
+    }
+}
+
+#[allow(unused)]
+#[wasm_bindgen]
+pub struct Tag {
+    name: String,
+    value: String
+}
+
+impl Tag {
+    pub fn new(name: String, value: String) -> Self {
+        Tag {
+            name,
+            value
+        }
+    }
+}
+
+#[allow(unused)]
 #[wasm_bindgen]
 pub struct Wallet {
     rpc_url: String,
@@ -45,12 +101,12 @@ pub struct IrysConstructorConfig {
 }
 
 #[wasm_bindgen]
-pub async fn connect_to_irys(url: String, token: String) -> WebIrys {    
+pub fn connect_to_irys(url: String, token: String) -> WebIrys {    
     let web_irys = get_irys_instance(url, token, JsValue::from(Wallet {
         rpc_url: SOLFLARE_URL.to_string(),
         name: SOLANA_WALLET.to_string(),
-        provider: get_solflare_instance(true).await
-    })).await;
+        provider: get_solflare_instance(true)
+    }));
 
     web_irys.into()
 }

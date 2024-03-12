@@ -24054,7 +24054,7 @@ class Irys {
   url;
   arbundles;
   IrysTransaction;
-  static VERSION = "0.1.15";
+  static VERSION = "0.1.16";
   constructor({ url: ie, arbundles: se }) {
     this.url = ie, this.arbundles = se, this.IrysTransaction = buildIrysTransaction(this);
   }
@@ -55937,20 +55937,32 @@ var VERSION = "1.4.2", __extends = /* @__PURE__ */ function() {
     }, ie.IFRAME_URL = "https://connect.solflare.com/", ie;
   }(EventEmitter)
 );
-async function getSolflareInstance(ae) {
+function getSolflareInstance(ae) {
   const ie = new Solflare();
   return ae && ie.connect(), ie;
 }
-async function getIrysInstance(ae, ie, se) {
+function getIrysInstance(ae, ie, se) {
   return new WebIrys$1({
     url: ae,
     token: ie,
     wallet: se
   });
 }
+function toAtomic(ae, ie) {
+  return ae.utils.toAtomic(ie);
+}
+function fromAtomic(ae, ie) {
+  return ae.utils.fromAtomic(ie);
+}
+function token(ae) {
+  return ae.token;
+}
 export {
   Solflare,
   WebIrys$1 as WebIrys,
+  fromAtomic,
   getIrysInstance,
-  getSolflareInstance
+  getSolflareInstance,
+  toAtomic,
+  token
 };

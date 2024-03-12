@@ -4,13 +4,13 @@ import { WebIrys } from "@irys/sdk";
 export { default as Solflare } from "@solflare-wallet/sdk";
 import Solflare from "@solflare-wallet/sdk";
 
-export async function getSolflareInstance(immediateConnect: boolean) {
+export function getSolflareInstance(immediateConnect: boolean) {
   const provider = new Solflare();
   if (immediateConnect) provider.connect();
   return provider;
 }
 
-export async function getIrysInstance(
+export function getIrysInstance(
   url: string,
   token: string,
   wallet: {
@@ -26,6 +26,18 @@ export async function getIrysInstance(
   });
 
   return irys;
+}
+
+export function toAtomic(webIrys: WebIrys, value: number) {
+  return webIrys.utils.toAtomic(value);
+}
+
+export function fromAtomic(webIrys: WebIrys, value: number) {
+  return webIrys.utils.fromAtomic(value);
+}
+
+export function token(webIrys: WebIrys) {
+  return webIrys.token;
 }
 
 // wallet: {
