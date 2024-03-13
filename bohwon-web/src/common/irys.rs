@@ -2,6 +2,7 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen::JsValue;
 use serde::{Deserialize, Serialize};
 
+#[allow(unused)]
 pub const IRYS_DEVNET_URL: &str = "https://devnet.irys.xyz";
 pub const SOLFLARE_URL: &str = "https://solflare.com/ul/v1/connect";
 pub const SOLANA_WALLET: &str = "solana";

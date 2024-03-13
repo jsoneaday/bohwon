@@ -2,7 +2,8 @@ mod app;
 mod common {
     pub mod irys;
     pub mod api {
-        pub mod liteseed;
+        pub mod liteseed_api;
+        pub mod liteseed_types;
     }
 }
 

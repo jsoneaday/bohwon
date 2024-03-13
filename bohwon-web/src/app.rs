@@ -1,9 +1,8 @@
-use leptos::web_sys::File;
 use leptos::*;
 use leptos::logging::log;
 use web_sys::FileList;
-
-use crate::common::api::liteseed::LsApi;
+use web_sys::File;
+use crate::common::api::liteseed_api::LsApi;
 
 #[component]
 pub fn App() -> impl IntoView {    
@@ -18,7 +17,15 @@ pub fn App() -> impl IntoView {
                 .map(|i| fl.item(i).unwrap())
                 .collect::<Vec<File>>();
 
-            api.get_cost(files.get(0).unwrap().size()).await;
+            let price = api.get_cost(files.get(0).unwrap().size()).await;
+            if let Ok(price) = price { 
+                log!("price: {price}");
+            } else { 
+                log!("error: {}", price.err().unwrap());
+            }
+
+            
+            api.upload_file(files.get(0).unwrap()).await;
         }
     });
     
