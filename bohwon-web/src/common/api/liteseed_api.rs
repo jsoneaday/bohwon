@@ -1,3 +1,5 @@
+use reqwest::header::HeaderMap;
+use reqwest::header::HeaderValue;
 use wasm_bindgen::closure::Closure;
 use wasm_bindgen::JsCast;
 use web_sys::Event;
@@ -66,16 +68,18 @@ impl LsApi {
             let file_reader: FileReader = ev.target().unwrap().dyn_into().unwrap();
             let jsvalue = file_reader.result().unwrap();
             let bytes = js_sys::Uint8Array::new(&jsvalue).to_vec();
+            let form_file = reqwest::multipart::Part::bytes(bytes.clone());
+            let form = reqwest::multipart::Form::new().part("file", form_file);
             let client = client.clone();
             
             wasm_bindgen_futures::spawn_local(async move {
                 let upload_result = client.post(format!("{LITESEED_URL}data"))
-                .body(bytes)
+                .multipart(form)
                 .send()
                 .await;
 
                 match upload_result {
-                    Ok(res) => log!("res {:?}", res.json::<String>().await),
+                    Ok(res) => log!("res {:?}", res),
                     Err(e) => log!("{e}")
                 };
             });
